@@ -1,0 +1,40 @@
+Write me a Python app named "Sound Font Generator".  Use libraries as necessary.  I prefer argparse.  Also break things up into functions so that this app can also be called externally as a library.
+
+Get the following information from the user:
+
+string for Config File.
+string for Output Folder.
+string for Project Name.
+string for Author Name.
+string for Blade Color.
+number for Light Effect.
+number for Blade Style.
+number for On Speed.
+number for Off Speed.
+
+If Output Folder is undefined, use the current folder.
+
+Name an integer next_color_entry and give it the value of 1.
+Name an integer found_line and give it the value of 0.
+
+If the Config File doesn't exist or is undefined, create a new file named "config.ini" in the current folder.  Otherwise, parse the Config File for the last line starting with "Color-" followed by a number.  If found, set next_color_entry to the number found plus 1 and set found_line to the line number.  If not found, set found_line to the last line number in the Config File.
+
+
+Create an output string with the following settings:
+
+"Color-" + next_color_entry + "=(" + Blade Color + ")," + Light Effect + "," + On Speed + "," + Off Speed + "," + Blade Style
+
+For example, it should look something like this:
+Color-1=(0,0,255),1,500,1000,0
+
+
+Create a new line in the Config File following line number: found_line.  Write the output string to this new line.
+
+
+If Project Name is defined, create a new file in the Output Folder named after the Project Name with a .txt file extension write a string to the file with the following formatting:
+
+"“" + Project Name + "” © " + Author Name if defined + Day Month Year + "."
+
+For example:
+
+“Buzz” © Bees 14 May 2023.

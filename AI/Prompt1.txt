@@ -1,0 +1,66 @@
+I need an application written that will run from Python 32 bit under Windows 11 64 bit, named "Sound Font Generator", or "SFG" when shortened.  Please show everything necessary for this to run.
+
+SFG's goal is to generate "Sound Fonts" for "Xenopixel V2 Lightsaber" hardware using a graphical interface so users may specify necessary files and desired settings before generating updated files in a specified folder.
+
+Users will specify .wav audio files to use as sources.  SFG may duplicate source files, if necessary, but modifying sources directly is prohibited.  Since this project includes audio reversal and pitch adjustment, an external library for .wav audio manipulation is necessary.
+
+SFG will use the tkinter library to create a graphical interface/form/window.  SFG will use one form, which must load center screen.  Sections of the form will be sorted into rows, for each source.  There should be a 20 pixel padding on the interior of the form so that no widgets are within the margin.  Widgets shall grow/shrink when the form is resized and still maintain the padding and alignment.  Widgets should still be legible even if the window is resized too small, in which case, a normally hidden vertical scrollbar on the right side of the window will show, allowing the user to scroll up and down through the rows.  The form uses the icon "icon.ico", if the file is found.
+
+
+The first row in SFG's form will give input fields to specify: the "Project Name" and "Author Name".  Also, a field for "Blade Color" will show a color box (default: 255, 255, 255).  The user may edit the color values from the text entry field/s or click on the color box to show tkinter's color chooser dialog and make the RGB selection.  In the same row, add a combo box (including label "Light Effect"), so that the user can choose between: "0 Fire", "1 Steady", "2 Pulse", "3 Rainbow", "4 Candy", "5 Unstable", "6 Crack".  The default selection for the combo box will be "1 Steady".  In the same row, add widgets for text entry for "On Speed" and "Off Speed".  In the same row, add a combo box (including label "Blade Style"), so that the user can choose between: "0 Standard", "1 Blaster", "2 Ghost", "3 Broken", "4 Warp", "5 Stack", "6 Phaser", "7 Photon", "8 Scavenger", "9 Hunter".  The default selection for this combo box is "0 Standard".
+
+
+For each of the sources specified later/below, a row will exist in SFG's form.  For each source file specified, the options will be given to:
+
+Adjust frequency divisible by a specified number of output files.  Allow the adjusted pitch to be either raised or lowered based on optional entered frequency adjustment.
+
+Reverse the audio.  When chosen, the reversed audio setting also applies to output files when specifying pitch adjustment.
+
+
+
+Allow subsequent files to be specified for the sources.  If additioinal files for a specific source are specified, the same options including another source file, number of output files, total pitch/frequency change and reverse will be presented to the user for each additional file.
+
+The user may specify an indefinite number of files, with file count, frequency adjustments and reverse option for each source.  Tkinter's file open dialog will be used for file browsing in addition to manual input in text input fields.
+
+As new files are specified as sources, additional row space will expand from the original layout for the specific source file.  Either the form height will grow as new rows are added or the vertical scrollbar will appear.
+
+For each new file created in the output folder, new file name variations from the source specifications will be updated in an order starting from one, within parenthesis.  For example, "swingh(1).wav", "swingh(2).wav", "swingh(3).wav", and so on.  Make sure to increment the number based on the total number of files generated for the particular source.  For example, if source "swingl.wav" has two source files specified, the first source with two pitch files generated and the second source with one pitch file generated, there would be three files generated: "swingl.wav": "swingl(1).wav", "swingl(2).wav", "swingl(3).wav".
+
+Regardless of the files chosen by the user, the file names will update as the original sources.  For example, if source "drag.wav" has three files specified: "ten.wav", "twelve.wav", "eight.wav", the output files would be named: "drag(1).wav", "drag(2).wav", "drag(3).wav".
+
+If a file is not chosen for a source, then no output files will generate for that specific source.
+
+Sources:
+
+beginmalt.wav
+blaster.wav
+clash.wav
+drag.wav
+engdrag.wav
+endlock.wav
+endmelt.wav
+font.wav
+force.wav
+hum.wav
+in.wav
+lock.wav
+melt.wav
+out.wav
+postoff.wav
+preon.wav
+swing.wav
+swingh.wav
+swingl.wav
+track.wav
+
+A bottom most row in SFG's form will be created containing entry for "Output Folder Path".  This row must always be on the bottom of the form, even if additional rows are added for the sources.
+
+Following the "Output Folder Path" entry, create two buttons: "Exit" and "Build".
+
+When clicked, "Exit" will close SFG.
+When clicked, "Build" will generate the output files as specified.  Also, a file will be created, named after the Project Name followed by .txt; for example, "HelloWorld.txt" for a project named "HelloWorld".  Also, a text file will be created in the same folder named "config.txt".  In the file "config.txt", a row of text will be generated as specified below:
+
+"Color-1=(" + RGB Color selection + ")," + number from start of string selection from Light Effect combo box + "," + On Speed entry + "," + Off Speed entry + "," + number from start of string selection from Blade Style combo box
+
+For example, it should look something like this:
+Color-1=(0,0,255),1,500,1000,0

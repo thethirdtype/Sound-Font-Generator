@@ -1,0 +1,70 @@
+import tkinter as tk
+from tkinter import filedialog, colorchooser
+import os
+import wave
+
+
+class SoundFontGenerator:
+    def __init__(self, master):
+        self.master = master
+        master.title("Sound Font Generator")
+        master.geometry("800x600")
+        master.iconbitmap("icon.ico")
+
+        # variables for Project Name, Author Name, Blade Color, Light Effect, On Speed, Off Speed, Blade Style,
+        # and Output Folder Path
+        self.project_name = tk.StringVar()
+        self.author_name = tk.StringVar()
+        self.blade_color = tk.StringVar(value="255, 255, 255")
+        self.light_effect = tk.StringVar(value="1 Steady")
+        self.on_speed = tk.StringVar()
+        self.off_speed = tk.StringVar()
+        self.blade_style = tk.StringVar(value="0 Standard")
+        self.output_folder_path = tk.StringVar()
+
+        # dictionary of Light Effect options
+        self.light_effect_options = {
+            "0 Fire": 0,
+            "1 Steady": 1,
+            "2 Pulse": 2,
+            "3 Rainbow": 3,
+            "4 Candy": 4,
+            "5 Unstable": 5,
+            "6 Crack": 6
+        }
+
+        # dictionary of Blade Style options
+        self.blade_style_options = {
+            "0 Standard": 0,
+            "1 Blaster": 1,
+            "2 Ghost": 2,
+            "3 Broken": 3,
+            "4 Warp": 4,
+            "5 Stack": 5,
+            "6 Phaser": 6,
+            "7 Photon": 7,
+            "8 Scavenger": 8,
+            "9 Hunter": 9
+        }
+
+        # create the form
+        self.create_form()
+
+    def create_form(self):
+        # create the form frame
+        form_frame = tk.Frame(self.master, padx=20, pady=20)
+        form_frame.pack(expand=True, fill=tk.BOTH)
+
+        # add Project Name, Author Name, Blade Color, Light Effect, On Speed, Off Speed, and Blade Style fields
+        row = 0
+        tk.Label(form_frame, text="Project Name:").grid(row=row, column=0, sticky="E")
+        tk.Entry(form_frame, textvariable=self.project_name).grid(row=row, column=1)
+        tk.Label(form_frame, text="Author Name:").grid(row=row, column=2, sticky="E")
+        tk.Entry(form_frame, textvariable=self.author_name).grid(row=row, column=3)
+        tk.Label(form_frame, text="Blade Color:").grid(row=row, column=4, sticky="E")
+        tk.Entry(form_frame, textvariable=self.blade_color, width=15).grid(row=row, column=5)
+        tk.Button(form_frame, text="Choose", command=self.choose_color).grid(row=row, column=6, padx=5)
+        tk.Label(form_frame, text="Light Effect:").grid(row=row, column=7, sticky="E")
+        tk.OptionMenu(form_frame, self.light_effect, *self.light_effect_options.keys()).grid(row=row, column=8)
+        tk.Label(form_frame, text="On Speed:").grid(row=row, column=9, sticky="E")
+        tk.Entry(form_frame, textvariable=self.on

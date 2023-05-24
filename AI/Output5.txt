@@ -1,0 +1,83 @@
+import argparse
+import os
+import wave
+import numpy as np
+
+
+def reverse_audio(data):
+    """Reverse the audio data."""
+    return data[::-1]
+
+
+def adjust_pitch(data, pitch_adjustment):
+    """Adjust the pitch of the audio data."""
+    speed_factor = 2 ** (pitch_adjustment / 1200)
+    indices = np.round(np.arange(0, len(data), speed_factor)).astype(int)
+    indices = indices[indices < len(data)].tolist()  # Convert indices to a list
+    adjusted_data = data[indices]
+    return adjusted_data
+
+
+def process_audio_file(input_file, reverse, pitch_adjustment, pitch_divisions, output_prefix, output_folder):
+    """Process the audio file with the specified options."""
+    # Load the input file
+    with wave.open(input_file, 'rb') as wav_file:
+        num_channels = wav_file.getnchannels()
+        sample_width = wav_file.getsampwidth()
+        frame_rate = wav_file.getframerate()
+        num_frames = wav_file.getnframes()
+        audio_data = np.frombuffer(wav_file.readframes(num_frames), dtype=np.int16)
+
+    # Reverse audio if specified
+    if reverse:
+        audio_data = reverse_audio(audio_data)
+
+    # Adjust pitch if specified
+    if pitch_adjustment != 0:
+        if pitch_divisions > 1:
+            pitch_step = pitch_adjustment / (pitch_divisions - 1)
+            for i in range(pitch_divisions):
+                adjusted_data = adjust_pitch(audio_data, pitch_adjustment - i * pitch_step)
+                save_output_file(adjusted_data.tobytes(), num_channels, sample_width, frame_rate, output_prefix, output_folder, i + 1)
+        else:
+            adjusted_data = adjust_pitch(audio_data, pitch_adjustment)
+            save_output_file(adjusted_data.tobytes(), num_channels, sample_width, frame_rate, output_prefix, output_folder)
+
+    # Save the original audio file
+    save_output_file(audio_data.tobytes(), num_channels, sample_width, frame_rate, output_prefix, output_folder)
+
+
+def save_output_file(data, num_channels, sample_width, frame_rate, output_prefix, output_folder, index=None):
+    """Save the audio data to an output file."""
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    output_filename = f"{output_prefix}"
+    if index is not None:
+        output_filename += f"({index})"
+    output_filename += ".wav"
+    output_path = os.path.join(output_folder, output_filename)
+
+    with wave.open(output_path, 'wb') as wav_file:
+        wav_file.setnchannels(num_channels)
+        wav_file.setsampwidth(sample_width)
+        wav_file.setframerate(frame_rate)
+        wav_file.writeframes(data)
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Sound Bender - Audio Processing App')
+    parser.add_argument('--input_file', type=str, help='Path to the input audio file')
+    parser.add_argument('--reverse', action='store_true', help='Reverse the audio')
+    parser.add_argument('--pitch_adjustment', type=int, default=0, help='Pitch adjustment value in cents')
+    parser.add_argument('--pitch_divisions', type=int, default=1, help='Number of pitch divisions')
+    parser.add_argument('--output_prefix', type=str, default='output', help='Prefix for output file names')
+    parser.add_argument('--output_folder', type=str, default='output', help='Folder to save output files')
+    args = parser.parse_args()
+
+    process_audio_file(args.input_file, args.reverse, args.pitch_adjustment,
+                       args.pitch_divisions, args.output_prefix, args.output_folder)
+
+
+if __name__ == '__main__':
+    main()
