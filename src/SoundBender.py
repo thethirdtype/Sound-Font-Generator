@@ -58,7 +58,7 @@ def process_audio_file(input_file, reverse, pitch_adjustment, pitch_divisions, p
 
     # Load the input file
     try:
-        with wave.open(input_file, 'rb') as wav_file:
+        with wave.open(input_file, "rb") as wav_file:
             num_channels = wav_file.getnchannels()
             sample_width = wav_file.getsampwidth()
             frame_rate = wav_file.getframerate()
@@ -71,7 +71,7 @@ def process_audio_file(input_file, reverse, pitch_adjustment, pitch_divisions, p
         if pitch_adjustment != 0:
             pitch_step = pitch_adjustment / (pitch_divisions - 1)
 
-            if pitch_direction == 'down':
+            if pitch_direction == "down":
                 pitch_adjustments = np.arange(0, -pitch_adjustment - pitch_step, -pitch_step)
             else:
                 pitch_adjustments = np.arange(0, pitch_adjustment + pitch_step, pitch_step)
@@ -99,18 +99,18 @@ def save_output_file(data, num_channels, sample_width, frame_rate, output_prefix
 
     output_filename = f"{output_prefix}"
     if index is not None:
-        output_filename += f"({index})"
+        output_filename += f" ({index})"
     output_filename += ".wav"
 
     existing_files = [f for f in os.listdir(output_folder) if f.startswith(output_prefix)]
     if existing_files:
         existing_indices = [get_index_from_filename(f) for f in existing_files]
         next_index = max(existing_indices) + 1
-        output_filename = f"{output_prefix}({next_index}).wav"
+        output_filename = f"{output_prefix} ({next_index}).wav"
 
     output_path = os.path.join(output_folder, output_filename)
 
-    with wave.open(output_path, 'wb') as wav_file:
+    with wave.open(output_path, "wb") as wav_file:
         wav_file.setnchannels(num_channels)
         wav_file.setsampwidth(sample_width)
         wav_file.setframerate(frame_rate)
@@ -120,8 +120,8 @@ def save_output_file(data, num_channels, sample_width, frame_rate, output_prefix
 
 
 def get_index_from_filename(filename):
-    start_index = filename.find('(')
-    end_index = filename.find(')')
+    start_index = filename.find("(")
+    end_index = filename.find(")")
     if start_index != -1 and end_index != -1:
         try:
             index = int(filename[start_index + 1: end_index])
@@ -132,20 +132,20 @@ def get_index_from_filename(filename):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Sound Bender - Audio Processing App')
-    parser.add_argument('--input_file', type=str, help='Path to the input audio file')
-    parser.add_argument('--reverse', action='store_true', help='Reverse the audio')
-    parser.add_argument('--pitch_adjustment', type=int, default=0, help='Pitch adjustment value in cents')
-    parser.add_argument('--pitch_divisions', type=int, default=1, help='Number of pitch divisions')
-    parser.add_argument('--pitch_direction', choices=['up', 'down'], default='up', help='Direction of pitch adjustment')
-    parser.add_argument('--output_prefix', type=str, default='output', help='Prefix for output file names')
-    parser.add_argument('--output_folder', type=str, default='output', help='Folder to save output files')
-    parser.add_argument('--reverse_order', action='store_true', help='Generate files in reverse order')
+    parser = argparse.ArgumentParser(description="Sound Bender - Audio Processing App")
+    parser.add_argument("--input_file", type=str, help="Path to the input audio file")
+    parser.add_argument("--reverse", action="store_true", help="Reverse the audio")
+    parser.add_argument("--pitch_adjustment", type=int, default=0, help="Pitch adjustment value in cents")
+    parser.add_argument("--pitch_divisions", type=int, default=1, help="Number of pitch divisions")
+    parser.add_argument("--pitch_direction", choices=["up", "down"], default="up", help="Direction of pitch adjustment")
+    parser.add_argument("--output_prefix", type=str, default="output", help="Prefix for output file names")
+    parser.add_argument("--output_folder", type=str, default="output", help="Folder to save output files")
+    parser.add_argument("--reverse_order", action="store_true", help="Generate files in reverse order")
     args = parser.parse_args()
 
     process_audio_file(args.input_file, args.reverse, args.pitch_adjustment, args.pitch_divisions,
                        args.pitch_direction, args.output_prefix, args.output_folder, args.reverse_order)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

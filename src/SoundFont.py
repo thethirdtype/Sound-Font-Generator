@@ -22,7 +22,7 @@ folder, including the author name "Bees" and current date.
 
 
 def create_config_file(config_file):
-    with open(config_file, 'w'):
+    with open(config_file, "w"):
         pass
 
 
@@ -32,27 +32,27 @@ def parse_config_file(config_file):
         next_color_entry = 1
         found_line = 0
     else:
-        with open(config_file, 'r') as file:
+        with open(config_file, "r") as file:
             lines = file.readlines()
         found_line = len(lines) - 1
         next_color_entry = 1
         for i, line in enumerate(lines):
-            if line.startswith('Color-'):
+            if line.startswith("Color-"):
                 found_line = i
-                number = int(line.split('=')[0].split('-')[1])
+                number = int(line.split("=")[0].split("-")[1])
                 next_color_entry = number + 1
     return next_color_entry, found_line
 
 
 def generate_output_string(blade_color, light_effect, on_speed, off_speed, blade_style, next_color_entry):
     # Remove parentheses if present
-    blade_color = blade_color.strip('()')
+    blade_color = blade_color.strip("()")
 
     # Remove spaces from the blade color string
-    blade_color = blade_color.replace(' ', '')
+    blade_color = blade_color.replace(" ", "")
 
     # Split the color components
-    color_components = blade_color.split(',')
+    color_components = blade_color.split(",")
 
     # Check if there are exactly three color components
     if len(color_components) != 3:
@@ -64,18 +64,18 @@ def generate_output_string(blade_color, light_effect, on_speed, off_speed, blade
             raise ValueError("Invalid blade color. Each color component must be a numerical value between 0 and 255.")
 
     # Concatenate the color components and other parameters to form the output string
-    output_string = f'Color-{next_color_entry}=({blade_color}),{light_effect},{on_speed},{off_speed},{blade_style}\n'
+    output_string = f"Color-{next_color_entry}=({blade_color}),{light_effect},{on_speed},{off_speed},{blade_style}\n"
 
     return output_string
 
 
 def write_output_string_to_config_file(output_string, config_file, found_line):
-    with open(config_file, 'r') as file:
+    with open(config_file, "r") as file:
         lines = file.readlines()
 
     lines.insert(found_line + 1, output_string)
 
-    with open(config_file, 'w') as file:
+    with open(config_file, "w") as file:
         file.writelines(lines)
 
 
@@ -84,11 +84,11 @@ def create_project_file(output_folder, project_name, author_name):
         os.makedirs(output_folder)
     if not project_name:
         return
-    file_name = os.path.join(output_folder, f'{project_name}.txt')
-    author_str = f' © {author_name}' if author_name else ''
-    date_str = datetime.date.today().strftime('%d %B %Y')
-    content = f'“{project_name}”{author_str} {date_str}.'
-    with open(file_name, 'w') as file:
+    file_name = os.path.join(output_folder, f"{project_name}.txt")
+    author_str = f" © {author_name}" if author_name else ""
+    date_str = datetime.date.today().strftime("%d %B %Y")
+    content = f"“{project_name}”{author_str} {date_str}."
+    with open(file_name, "w") as file:
         file.write(content)
 
 
@@ -108,21 +108,21 @@ def create_font(config_file, output_folder, project_name, author_name, blade_col
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Sound Font Generator')
-    parser.add_argument('--config_file', type=str, help='Config File')
-    parser.add_argument('--output_folder', type=str, help='Output Folder')
-    parser.add_argument('--project_name', type=str, help='Project Name')
-    parser.add_argument('--author_name', type=str, help='Author Name')
-    parser.add_argument('--blade_color', type=str, required=True, help='Blade Color')
-    parser.add_argument('--light_effect', type=int, required=True, help='Light Effect')
-    parser.add_argument('--blade_style', type=int, required=True, help='Blade Style')
-    parser.add_argument('--on_speed', type=int, required=True, help='On Speed')
-    parser.add_argument('--off_speed', type=int, required=True, help='Off Speed')
+    parser = argparse.ArgumentParser(description="Sound Font Generator")
+    parser.add_argument("--config_file", type=str, help="Config File")
+    parser.add_argument("--output_folder", type=str, help="Output Folder")
+    parser.add_argument("--project_name", type=str, help="Project Name")
+    parser.add_argument("--author_name", type=str, help="Author Name")
+    parser.add_argument("--blade_color", type=str, required=True, help="Blade Color")
+    parser.add_argument("--light_effect", type=int, required=True, help="Light Effect")
+    parser.add_argument("--blade_style", type=int, required=True, help="Blade Style")
+    parser.add_argument("--on_speed", type=int, required=True, help="On Speed")
+    parser.add_argument("--off_speed", type=int, required=True, help="Off Speed")
     args = parser.parse_args()
 
     create_font(args.config_file, args.output_folder, args.project_name, args.author_name,
                 args.blade_color, args.light_effect, args.blade_style, args.on_speed, args.off_speed)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

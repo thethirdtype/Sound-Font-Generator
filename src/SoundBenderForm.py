@@ -41,8 +41,8 @@ def close_form(event=None):
 
 
 def convert_path(path):
-    if os.name == 'nt':  # Check if running on Windows
-        path = path.replace('/', '\\')  # Convert forward slashes to backslashes
+    if os.name == "nt":  # Check if running on Windows
+        path = path.replace("/", "\\")  # Convert forward slashes to backslashes
     return path
 
 
@@ -59,7 +59,7 @@ def start_processing(event=None):
 
     # Validate input file
     if not os.path.isfile(input_file):
-        status_label.config(text='Error: Invalid input file.')
+        status_label.config(text="Error: Invalid input file.")
         return
 
     # Call the library function
@@ -74,83 +74,112 @@ def start_processing(event=None):
         reverse_order=reverse_order
     )
 
-    status_label.config(text='Audio processing completed successfully.')
+    status_label.config(text="Audio processing completed successfully.")
 
 
 # Create the main window
 window = tk.Tk()
-window.title('Sound Bender')
+window.title("Sound Bender")
+
+# Hide window
+window.withdraw()
 
 # Set padding for all widgets
 padding = 10
 
 # Input file label, entry, and browse button
-input_label = tk.Label(window, text='Input File:')
+input_label = tk.Label(window, text="Input File:")
 input_label.grid(row=0, column=0, sticky=tk.E, padx=padding, pady=padding)
 input_entry = tk.Entry(window)
 input_entry.grid(row=0, column=1, columnspan=2, sticky=tk.W+tk.E, padx=padding, pady=padding)
-browse_button = tk.Button(window, text='Browse', command=browse_file)
+input_entry.bind("<Enter>", lambda event: status_label.config(text="Enter file location"))
+input_entry.bind("<Leave>", lambda event: status_label.config(text=""))
+browse_button = tk.Button(window, text="Browse", command=browse_file)
 browse_button.grid(row=0, column=3, sticky=tk.W, padx=padding, pady=padding)
 browse_button.bind("<Return>", browse_file)
+browse_button.bind("<Enter>", lambda event: status_label.config(text="Browse to file location"))
+browse_button.bind("<Leave>", lambda event: status_label.config(text=""))
 
 # Pitch adjustment label and entry
-pitch_adjustment_label = tk.Label(window, text='Pitch Adjustment:')
+pitch_adjustment_label = tk.Label(window, text="Pitch Adjustment:")
 pitch_adjustment_label.grid(row=1, column=0, sticky=tk.E, padx=padding, pady=padding)
 pitch_adjustment_entry = tk.Entry(window)
 pitch_adjustment_entry.grid(row=1, column=1, columnspan=2, sticky=tk.W+tk.E, padx=padding, pady=padding)
-pitch_adjustment_entry.insert(tk.END, '0')
+pitch_adjustment_entry.insert(tk.END, "0")
+pitch_adjustment_entry.bind("<Enter>", lambda event: status_label.config(text="Input pitch adjustment"))
+pitch_adjustment_entry.bind("<Leave>", lambda event: status_label.config(text=""))
 
 # Pitch divisions label and entry
-pitch_divisions_label = tk.Label(window, text='Pitch Divisions:')
+pitch_divisions_label = tk.Label(window, text="Pitch Divisions:")
 pitch_divisions_label.grid(row=2, column=0, sticky=tk.E, padx=padding, pady=padding)
 pitch_divisions_entry = tk.Entry(window)
 pitch_divisions_entry.grid(row=2, column=1, columnspan=2, sticky=tk.W+tk.E, padx=padding, pady=padding)
-pitch_divisions_entry.insert(tk.END, '1')
+pitch_divisions_entry.insert(tk.END, "1")
+pitch_divisions_entry.bind("<Enter>", lambda event: status_label.config(text="Input pitch divisions"))
+pitch_divisions_entry.bind("<Leave>", lambda event: status_label.config(text=""))
 
 # Pitch direction radio buttons
-pitch_direction_var = tk.StringVar(value='up')
-pitch_direction_label = tk.Label(window, text='Pitch Direction:')
+pitch_direction_var = tk.StringVar(value="up")
+pitch_direction_label = tk.Label(window, text="Pitch Direction:")
 pitch_direction_label.grid(row=3, column=0, sticky=tk.E, padx=padding, pady=padding)
-up_radio = tk.Radiobutton(window, text='Up', variable=pitch_direction_var, value='up')
+up_radio = tk.Radiobutton(window, text="Up", variable=pitch_direction_var, value="up")
 up_radio.grid(row=3, column=1, sticky=tk.W, padx=padding, pady=padding)
-down_radio = tk.Radiobutton(window, text='Down', variable=pitch_direction_var, value='down')
+up_radio.bind("<Enter>", lambda event: status_label.config(text="Pitch goes up"))
+up_radio.bind("<Leave>", lambda event: status_label.config(text=""))
+down_radio = tk.Radiobutton(window, text="Down", variable=pitch_direction_var, value="down")
 down_radio.grid(row=3, column=2, sticky=tk.E, padx=padding, pady=padding)
+down_radio.bind("<Enter>", lambda event: status_label.config(text="Pitch goes down"))
+down_radio.bind("<Leave>", lambda event: status_label.config(text=""))
 
 # Output prefix label and entry
-output_prefix_label = tk.Label(window, text='Output Prefix:')
+output_prefix_label = tk.Label(window, text="Output Prefix:")
 output_prefix_label.grid(row=4, column=0, sticky=tk.E, padx=padding, pady=padding)
 output_prefix_entry = tk.Entry(window)
 output_prefix_entry.grid(row=4, column=1, columnspan=2, sticky=tk.W+tk.E, padx=padding, pady=padding)
+output_prefix_entry.bind("<Enter>", lambda event: status_label.config(text="Enter the prefix to use for file naming"))
+output_prefix_entry.bind("<Leave>", lambda event: status_label.config(text=""))
 
 # Output folder label, entry, and browse button
-output_folder_label = tk.Label(window, text='Output Folder:')
+output_folder_label = tk.Label(window, text="Output Folder:")
 output_folder_label.grid(row=5, column=0, sticky=tk.E, padx=padding, pady=padding)
 output_folder_entry = tk.Entry(window)
 output_folder_entry.grid(row=5, column=1, columnspan=2, sticky=tk.W+tk.E, padx=padding, pady=padding)
-output_browse_button = tk.Button(window, text='Browse', command=browse_output_folder)
+output_folder_entry.bind("<Enter>", lambda event: status_label.config(text="Enter folder location"))
+output_folder_entry.bind("<Leave>", lambda event: status_label.config(text=""))
+output_browse_button = tk.Button(window, text="Browse", command=browse_output_folder)
 output_browse_button.grid(row=5, column=3, sticky=tk.W, padx=padding, pady=padding)
 output_browse_button.bind("<Return>", browse_output_folder)
+output_browse_button.bind("<Enter>", lambda event: status_label.config(text="Browse to folder location"))
+output_browse_button.bind("<Leave>", lambda event: status_label.config(text=""))
 
 # Reverse checkboxes
-reverse_label = tk.Label(window, text='Reverse:')
+reverse_label = tk.Label(window, text="Reverse:")
 reverse_label.grid(row=6, column=0, sticky=tk.E, padx=padding, pady=padding)
 reverse_var = tk.BooleanVar()
-reverse_check = tk.Checkbutton(window, text='Audio Output', variable=reverse_var)
+reverse_check = tk.Checkbutton(window, text="Audio Output", variable=reverse_var)
 reverse_check.grid(row=6, column=1, sticky=tk.W, padx=padding, pady=padding)
+reverse_check.bind("<Enter>", lambda event: status_label.config(text="Reverse audio output"))
+reverse_check.bind("<Leave>", lambda event: status_label.config(text=""))
 reverse_order_var = tk.BooleanVar()
-reverse_order_check = tk.Checkbutton(window, text='File Order', variable=reverse_order_var)
+reverse_order_check = tk.Checkbutton(window, text="File Order", variable=reverse_order_var)
 reverse_order_check.grid(row=6, column=2, sticky=tk.E, padx=padding, pady=padding)
+reverse_order_check.bind("<Enter>", lambda event: status_label.config(text="Reverse file order"))
+reverse_order_check.bind("<Leave>", lambda event: status_label.config(text=""))
 
 # Close and Start buttons
-close_button = tk.Button(window, text='Close', command=close_form)
+close_button = tk.Button(window, text="Close", command=close_form)
 close_button.grid(row=7, column=0, columnspan=2, pady=padding)
 close_button.bind("<Return>", close_form)
-start_button = tk.Button(window, text='Start', command=start_processing)
+close_button.bind("<Enter>", lambda event: status_label.config(text="Close window"))
+close_button.bind("<Leave>", lambda event: status_label.config(text=""))
+start_button = tk.Button(window, text="Start", command=start_processing)
 start_button.grid(row=7, column=1, columnspan=3, pady=padding)
 start_button.bind("<Return>", start_processing)
+start_button.bind("<Enter>", lambda event: status_label.config(text="Generate sound files"))
+start_button.bind("<Leave>", lambda event: status_label.config(text=""))
 
 # Status label
-status_label = tk.Label(window, text='')
+status_label = tk.Label(window, text="")
 status_label.grid(row=8, column=0, columnspan=4, pady=padding)
 
 # Configure grid weights to make widgets resize when form is resized
@@ -164,6 +193,12 @@ window.protocol("WM_DELETE_WINDOW", close_form)
 
 # Place window center screen
 center_window()
+
+# Show window
+window.deiconify()
+
+# Set Icon
+window.iconbitmap("sfg_icon.ico")
 
 # Start the main loop
 window.mainloop()
