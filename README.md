@@ -1,4 +1,4 @@
-![image](https://github.com/thethirdtype/Sound-Font-Generator/assets/125661915/bf8dc85a-ed30-4dc4-a47a-e196fab6edcf)
+![SFG_Logo_512](https://github.com/thethirdtype/Sound-Font-Generator/assets/125661915/885e3589-a4e0-4d4a-8c34-4c738c711547)
 
 # Sound Font Generator
 The main objective of this project is to develop versatile tools that simplify the creation of Sound Fonts for lightsabers, including Xenopixel Lightsabers. These tools provide a range of functionalities, such as adjusting pitch across multiple sound files while preserving speed, updating the config.ini file with the required parameters, enabling audio reversal, and offering a palette for convenient selection and previewing of blade colors.
