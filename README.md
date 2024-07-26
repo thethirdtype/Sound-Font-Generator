@@ -11,4 +11,4 @@ From first build:
 
 
 ## From the developer
-In this personal endeavor, I've embarked on a fascinating journey, experimenting with the integration of AI, specifically GPT 3.5. Collaborating with AI through paired programming has proven invaluable, particularly in areas where my expertise falls short, such as audio manipulation. Along the way, I'm honing my skills in crafting efficient AI prompts. I firmly believe that the future of software development relies heavily on harnessing AI's potential, much like using a calculator for complex math, an efficiency that I'm eager to explore further.
+Thank you for visiting and showing an interest in this project.
